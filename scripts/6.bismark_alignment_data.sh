@@ -9,7 +9,15 @@ set -e
 module purge; module load bluebear
 module load Bismark/0.22.3-foss-2019b #load bismark 
 
-cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/raw_data_trim_galore
+cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/raw_data/raw_data_trim_galore
 
-bismark -N 1 --un --ambiguous --gzip -q --se *.fq --genome /rds/projects/v/vianaj-genomics-brain-development/MATRICS/genome -o /rds/projects/v/vianaj-genomics-brain-development/MATRICS/output_alignment
-#align genome and put in output directory
+for i in *_trimmed.fq
+do
+file=`basename $i`
+sample=`echo $file `
+read1=`ls *.fq | grep ^$sample`;
+
+bismark -N 1 --un --ambiguous --gzip -q --se $read1 --genome  /rds/projects/v/vianaj-genomics-brain-development/MATRICS/genome -o /rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_alignment
+done
+
+#alignment loop
