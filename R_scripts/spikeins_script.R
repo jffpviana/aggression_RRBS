@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # made methylated data into a list
 
 library(stringr) #this package is quite useful and it's already install on bear
@@ -17,6 +18,16 @@ names(methylated_data)<- str_match(Sys.glob("*.bismark.cov"),paste0("BLB","(.*?.
 
 
 
+=======
+# change directory
+setwd("/Volumes/rdsprojects/v/vianaj-genomics-brain-development/MATRICS/
+      bismark_methylation_extractor/spikeins/methylated/")
+
+# added files to list of data frames
+methylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table)
+
+# same for unmethylated data
+>>>>>>> 09fb3c4996f4397020525034022ed666378e4e80
 setwd("/Volumes/rdsprojects/v/vianaj-genomics-brain-development/MATRICS/
       bismark_methylation_extractor/spikeins/unmethylated/")
 
@@ -24,6 +35,7 @@ setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/
                   bismark_methylation_extractor/spikeins/unmethylated/")
 unmethylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table)
 
+<<<<<<< HEAD
 for(file in 1:length(methylated_data)){ #Loot from 1 to the maximum elements of the list
 data.frame(methylated_data[[file]]) ->temp_meth #this sill extract the data set in the current loop.
 names(methylated_data)[[file]] #this will give you the sample name for the current set
@@ -32,3 +44,13 @@ names(methylated_data)[[file]] #this will give you the sample name for the curre
 #Try and see if you can extract the dataset from the unmethylated list using the name of the methylated list element
 
 }
+=======
+# adds column names to list of data frame
+
+colnames<- c("chromosome", "start_position", 
+             "end_position", "methylation_percentage", 
+             "count_methylated", "count_unmethylated")
+
+lapply(methylated_data, setNames, colnames)
+lapply(unmethylated_data, setNames, colnames)
+>>>>>>> 09fb3c4996f4397020525034022ed666378e4e80
