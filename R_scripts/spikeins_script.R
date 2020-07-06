@@ -18,33 +18,28 @@ setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methyla
 unmethylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table, stringsAsFactors=FALSE)
 names(unmethylated_data)<- str_match(Sys.glob("*.bismark.cov"),paste0("BLB","(.*?.....)"))[,1]
 
-colnames <- c("chromosome", "start_position", "end_position", "methylation_percentage", "count_methylated", "count_unmethylated")
-
-# start pdf
-# pdf('BLB_methylation_plots.pdf')
-
 # start loop
 for(file in 1:length(methylated_data)){ #Loot from 1 to the maximum elements of the list
   temp_meth <- data.frame(methylated_data[[file]]) #this sill extract the data set in the current loop.
   colnames(temp_meth) <- c("chromosome", "start_position", "end_position", "methylation_percentage", "count_methylated", "count_unmethylated") #add column names
-  names(methylated_data)[[file]] #this will give you the sample name for the current set
+  # names(methylated_data)[[file]] #this will give you the sample name for the current set
 
-for(file in 1:length(unmethylated_data)){ #if i did this would it not cause the wrong loop?
-  temp_unmeth <- data.frame(unmethylated_data[[file]]) 
-  colnames(temp_unmeth) <- colnames(temp_meth) <- c("chromosome", "start_position", "end_position", "methylation_percentage", "count_methylated", "count_unmethylated") #add column names
-  names(unmethylated_data)[[file]]
-
+  # call corresponding unmeth file
+  temp_unmeth <- data.frame(unmethylated_data[names(methylated_data)[[file]]])
+  colnames(temp_unmeth) <- c("chromosome", "start_position", "end_position", "methylation_percentage", "count_methylated", "count_unmethylated") #add column names
+  
   setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/plots")
   setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/plots/test_plots")
   
+  # start pdf
   pdf("BLB", "(.*?.....).pdf")
   
+  # plot
   plot <- ggplot() + 
     geom_point(data= temp_meth, aes(x=start_position, y= methylation_percentage, color = chromosome))+ 
     geom_point(data= temp_unmeth, aes(x=start_position, y= methylation_percentage, color = chromosome)) + ggtitle(label = names(methylated_data)[[file]], "Methylation Percentage") + ylim(-1, 100)
   
+  # end pdf
   dev.off()
   }
-}
 
-# dev.off()
