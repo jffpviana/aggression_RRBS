@@ -26,22 +26,24 @@ colnames <- c("chromosome", "start_position", "end_position", "methylation_perce
 # start loop
 for(file in 1:length(methylated_data)){ #Loot from 1 to the maximum elements of the list
   temp_meth <- data.frame(methylated_data[[file]]) #this sill extract the data set in the current loop.
-  temp_meth<- lapply(temp_meth, setNames, colnames) #add column names
+  colnames(temp_meth) <- c("chromosome", "start_position", "end_position", "methylation_percentage", "count_methylated", "count_unmethylated") #add column names
   names(methylated_data)[[file]] #this will give you the sample name for the current set
 
 for(file in 1:length(unmethylated_data)){ #if i did this would it not cause the wrong loop?
   temp_unmeth <- data.frame(unmethylated_data[[file]]) 
-  temp_unmeth <- lapply(temp_unmeth, setNames, colnames) #having trouble turning this back into a data frame
+  colnames(temp_unmeth) <- colnames(temp_meth) <- c("chromosome", "start_position", "end_position", "methylation_percentage", "count_methylated", "count_unmethylated") #add column names
   names(unmethylated_data)[[file]]
 
   setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/plots")
   setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/plots/test_plots")
-
+  
+  pdf("BLB", "(.*?.....).pdf")
+  
   plot <- ggplot() + 
     geom_point(data= temp_meth, aes(x=start_position, y= methylation_percentage, color = chromosome))+ 
     geom_point(data= temp_unmeth, aes(x=start_position, y= methylation_percentage, color = chromosome)) + ggtitle(label = names(methylated_data)[[file]], "Methylation Percentage") + ylim(-1, 100)
   
-  ggsave("BLB_%s.pdf")
+  dev.off()
   }
 }
 
