@@ -6,10 +6,10 @@
 # Then you can use write.csv to output the table in a csv format.
 library(stringr)
 # cd - if error change to /Volumes/vianaj-genomics-brain-development/ or /rds/projects/v/vianaj-genomics-brain-development/
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/aggression_RRBS/")
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/")
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/")
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/")
+#setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/aggression_RRBS/")
+#setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/")
+#setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/")
+#setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/")
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/methylated")
 
 # methylated data
@@ -17,7 +17,7 @@ methylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table, stringsAsFactor
 names(methylated_data)<- str_match(Sys.glob("*.bismark.cov"),paste0("BLB","(.*?.....)"))[,1] #This takes the sample names from the files names and attributes it to the list elements. There are cleaner ways of doing this, but I am not an expert in regular expressions.
 
 # unmethylated data
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/")
+#setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/")
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/unmethylated")
 unmethylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table, stringsAsFactors=FALSE)
 names(unmethylated_data)<- str_match(Sys.glob("*.bismark.cov"),paste0("BLB","(.*?.....)"))[,1]
@@ -51,4 +51,4 @@ for(file in 1:length(methylated_data)){ #Loop from 1 to the maximum elements of 
 colnames(avg_methlation_table) <- c("chromome", "methylation % of methylated reads", "methylation % of unmethylated reads")
 
 # output to csv file
-write.csv(avg_methlation_table, file= '//rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/tables/avg_methylation.csv', row.names = FALSE)
+write.csv(avg_methlation_table, file= '/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/tables/avg_methylation.csv', row.names = FALSE)
