@@ -6,13 +6,13 @@
 # Then you can use write.csv to output the table in a csv format.
 library(stringr)
 # cd - if error change to /Volumes/vianaj-genomics-brain-development/ or /rds/projects/v/vianaj-genomics-brain-development/
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/methylated/done")
+setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/methylated/")
 
 # methylated data
 methylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table, stringsAsFactors=FALSE) #I added the argument stringAsFactors=FALSE or otherwise some of the columns would be imported as factors . Do str(methylated_data) before and after adding that argument and see first column. Add to below as well
 names(methylated_data)<- str_match(Sys.glob("*.bismark.cov"),paste0("BLB","(.*?.....)"))[,1] #This takes the sample names from the files names and attributes it to the list elements. There are cleaner ways of doing this, but I am not an expert in regular expressions.
 
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/unmethylated/done")
+setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/unmethylated/")
 
 # unmethylated data
 unmethylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table, stringsAsFactors=FALSE)
@@ -57,6 +57,10 @@ avg_methylation_table <- data.frame(avg_methylation_table)
 # add column names
 colnames(avg_methylation_table) <- c("chromome", "methylation % of methylated reads", "methylation % of unmethylated reads")
 
+
+setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/tables/")
 # output to csv file
 write.csv(avg_methylation_table, file= 'C:\\rds\\projects\\v\\vianaj-genomics-brain-development\\MATRICS\\bismark_methylation_extractor\\spikeins\\tables\\avg_methylation.csv', row.names = FALSE)
-
+# write.csv(avg_methylation_table, file= "rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/tables/avg_methylation.csv/", row.names = FALSE)
+# write.csv(avg_methylation_table, file= 'rds/projects/v/vianaj-genomics-brain-development/MATRICS/aggression_RRBS/R_scripts', row.names = FALSE)
+write.csv(avg_methylation_table, file= '~/avg_methylation.csv', row.names = FALSE)
