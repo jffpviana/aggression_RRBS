@@ -6,7 +6,7 @@ library("ggplot2") #loads ggplot2
 #setwd("/Volumes/vianaj-genomics-brain-development/MATRICS/")
 #setwd("/Volumes/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/")
 #setwd("/Volumes/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/")
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/methylated/done")
+setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/methylated/")
 #if you put the full path you only have to tell R the final destination, not every folder on the way
 
 # methylated data
@@ -14,7 +14,7 @@ methylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table, stringsAsFactor
 names(methylated_data)<- str_match(Sys.glob("*.bismark.cov"),paste0("BLB","(.*?.....)"))[,1] #This takes the sample names from the files names and attributes it to the list elements. There are cleaner ways of doing this, but I am not an expert in regular expressions.
 
 # unmethylated data
-setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/unmethylated/done")
+setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/unmethylated/")
 
 
 unmethylated_data <- lapply(Sys.glob("*.bismark.cov"), read.table, stringsAsFactors=FALSE)
