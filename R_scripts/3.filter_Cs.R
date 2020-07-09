@@ -13,10 +13,12 @@ names(files) <- str_match(Sys.glob("*.bismark.cov"),paste0("BLB","(.*?.....)"))[
 for(f in 1:length(files)){ #Loop from 1 to the maximum elements of the list
   dat <- fread(file=files[f], stringsAsFactors = FALSE)
   dat <- data.frame(dat)
+  # add column names
   colnames(dat) <- c("chromosome", "start_position", "end_position", "methylation_percentage", "count_methylated", "count_unmethylated") #add column names
-  # names(files)[[f]] #this will give you the sample name for the current set
+  # names(files)[[f]] # sample name for the current set
   
-  dat_filtered <- dat %>% filter(count_methylated + count_unmethylated > 9) # subsets data frame
+  dat_filtered <- dat %>% filter(count_methylated + count_unmethylated > 10) # subsets data frame
 
-# output to .cov file
+# output to .csv file
+  fwrite(dat_filtered, file = paste0("/Volumes/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/filtered", names(files)[[f]], "_filtered.csv"))
   }
