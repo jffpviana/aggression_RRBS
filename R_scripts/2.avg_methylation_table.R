@@ -1,10 +1,5 @@
-# average the methylation % of all positions in the methylated reads and unmethylated 
-# for each sample and output it on a table.
-# Have a table where rows are the samples and then have one column for the 
-# average methylation % of the unmethylated control and another column for the  average methylation % of the methylated control. We would expect the unmethylated one to be close to 0% and the methylated one to be close to 100%.
-# Again you can use a loop to move through the table rows and fill in the table.
-# Then you can use write.csv to output the table in a csv format.
 library(stringr)
+
 # cd - if error change to /Volumes/vianaj-genomics-brain-development/ or /rds/projects/v/vianaj-genomics-brain-development/
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/methylated/")
 
@@ -57,10 +52,8 @@ avg_methylation_table <- data.frame(avg_methylation_table)
 # add column names
 colnames(avg_methylation_table) <- c("chromome", "methylation % of methylated reads", "methylation % of unmethylated reads")
 
-
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/tables/")
+
 # output to csv file
 write.csv(avg_methylation_table, file= 'C:\\rds\\projects\\v\\vianaj-genomics-brain-development\\MATRICS\\bismark_methylation_extractor\\spikeins\\tables\\avg_methylation.csv', row.names = FALSE)
-# write.csv(avg_methylation_table, file= "rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/spikeins/tables/avg_methylation.csv/", row.names = FALSE)
-# write.csv(avg_methylation_table, file= 'rds/projects/v/vianaj-genomics-brain-development/MATRICS/aggression_RRBS/R_scripts', row.names = FALSE)
 write.csv(avg_methylation_table, file= '~/avg_methylation.csv', row.names = FALSE)
