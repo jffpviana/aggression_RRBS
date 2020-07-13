@@ -18,6 +18,8 @@ for(f in 1:length(files)){ #Loop from 1 to the maximum elements of the list
   # names(files)[[f]] # sample name for the current set
   
   dat_filtered <- dat %>% filter(count_methylated + count_unmethylated > 10) # subsets data frame
+  
+  dat_filtered$location <- paste0("chr", dat_filtered$chromosome,":", dat_filtered$start_position) # add new col with chromosome + start pos
 
 # output to .csv file
   fwrite(dat_filtered, file = paste0("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/filtered/", names(files)[[f]], "_filtered.csv"))
