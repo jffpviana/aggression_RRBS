@@ -1,7 +1,7 @@
 library(stringr)
 library(data.table)
 library(dplyr)
-library(zoo)
+# library(zoo)
 
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/filtered")
 
@@ -23,9 +23,10 @@ for(f in 1:length(ACC_files)){
   
   # filter for rows which only have common Cs
   dat_filtered <- dat %>% filter(dat[dat$location %in% common_Cs])
-  new <- cbind(dat_filtered$methylation_percentage)
+  new <- cbind(dat_filtered$methylation_percentage) # new df
   rownames(new) <- dat_filtered$location
   colnames(new) <-names(files)[[f]]
-  samples_list[[f]] <- rbind(new)
-  
+  samples_list[[f]] <- cbind(new)
 }
+
+all_samples <- do.call(cbind, samples_list) # error here
