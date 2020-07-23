@@ -7,6 +7,7 @@
 library(BiSeq)
 library(stringr)
 library(dplyr)
+library(data.table)
 
 ###########################TESTING GROUP EFFECTS#################################
 
@@ -46,7 +47,6 @@ cByJ <- predictedMeth[, 1:5]
 cJ <- predictedMeth[, 6:10]
 mean.cByJ <- rowMeans(methLevel(cByJ))
 mean.cJ <- rowMeans(methLevel(cJ))
-
 
 # beta regression
 betaResults <- betaRegression(formula = ~group,
