@@ -10,6 +10,14 @@ library(dplyr)
 
 ###########################TESTING GROUP EFFECTS#################################
 
+# phenotype csv
+setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/")
+pheno <- as.data.frame(fread(file='BLBbrains_pheno.csv', stringsAsFactors = FALSE, header = TRUE))
+pheno <- pheno[-which(pheno$ACC_ID=="-"),] # remove missing row for ACC
+
+colData <- DataFrame(group = pheno$Group, row.names = pheno$ACC_ID)
+
+# cd
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/")
 
 # file names
@@ -17,20 +25,15 @@ files <- list.files(pattern="*ACC_r1_trimmed_bismark_bt2.bismark.cov")
 names(files) <- str_match(Sys.glob("*ACC_r1_trimmed_bismark_bt2.bismark.cov"),paste0("BLB","(.*?.....)"))[,1]
 # names(files)[[f]]
 
-rrbs <- readBismark(files, colData = names(files)) #BSraw object
-# subset into aggressive and non-aggressive
-# rrbs.cByJ <- rrbs[, 1:5] # 01-05, non-aggressive
-# rrbs.cJ <- rrbs[, 6:10] # 06-10, aggressive
+rrbs <- readBismark(files, colData = colData) #BSraw object
 
 # predicted meth
-rrbs.small <- rrbs[1:1000,] 
 # BSraw object but restricted to CpG sites within CpG clusters:
-rrbs.clust.unlim <- clusterSites(object = rrbs.small,
+rrbs.clust.unlim <- clusterSites(object = rrbs,
                                  groups = colData(rrbs)$group,
                                  perc.samples = 4/5,
                                  min.sites = 20,
                                  max.dist = 100)
-
 # smoothing
 ind.cov <- totalReads(rrbs.clust.unlim) > 0
 quant <- quantile(totalReads(rrbs.clust.unlim)[ind.cov], 0.9) # coverage
@@ -44,10 +47,10 @@ cJ <- predictedMeth[, 6:10]
 mean.cByJ <- rowMeans(methLevel(cByJ))
 mean.cJ <- rowMeans(methLevel(cJ))
 
+
 # beta regression
 betaResults <- betaRegression(formula = ~group,
                               link = "probit",
                               object = predictedMeth,
                               type = "BR")
 head(betaResults) # all results are NA
-
