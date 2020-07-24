@@ -1,8 +1,8 @@
 # install
-if (!requireNamespace("BiocManager", quietly = TRUE))
- install.packages("BiocManager")
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+ #install.packages("BiocManager")
 
- BiocManager::install("BiSeq")
+ #BiocManager::install("BiSeq")
 
 library(BiSeq)
 library(stringr)
@@ -44,8 +44,10 @@ rrbs.clust.lim <- limitCov(rrbs.clust.unlim, maxCov = quant) # smooth the methyl
 predictedMeth <- predictMeth(object = rrbs.clust.lim) # BSrel object with smoothed relative methylation levels for each CpG site within CpG clusters
 
 # beta regression
+pdf("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/boxplots/ACC/beta_regression_ACC.pdf")
 betaResults <- betaRegression(formula = ~group,
                               link = "probit",
                               object = predictedMeth,
                               type = "BR")
-head(betaResults) # all results are NA
+print(head(betaResults))
+dev.off()
