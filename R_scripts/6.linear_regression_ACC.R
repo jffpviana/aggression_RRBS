@@ -1,7 +1,8 @@
-library(stringr)
 library(data.table)
+library(stringr)
 library(dplyr)
 
+# cd
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/filtered")
 
 # list of files and names
@@ -28,24 +29,39 @@ for(f in 1:length(files)){
 
   print(paste(names(files)[[f]], "match row names:", identical(rownames(dat_filtered), common_Cs[,1]))) # check everything is in the right order. 
  
-  # add each sample to list
+  # add each sample to sample_slist
   sample <- cbind(dat_filtered$methylation_percentage) 
-  rownames(sample) <- dat_filtered$location
-  colnames(sample) <-names(files)[[f]]
+  rownames(sample) <- dat_filtered$location # row names
+  colnames(sample) <-names(files)[[f]] # col names
   print(head(sample))
   samples_list[[f]] <- cbind(sample)
 }
 
-print("loop done")
-
 # add to big dataset
 all_samples <- do.call(cbind, samples_list)
-print(head(all_samples))
 
+##########################linear regression############################################
+
+# cd
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/")
 
+# phenotype csv
 pheno <- as.data.frame(fread(file='BLBbrains_pheno.csv', stringsAsFactors = FALSE, header = TRUE))
-pheno <- pheno[-which(pheno$ACC_ID=="-"),]
+pheno <- pheno[-which(pheno$ACC_ID=="-"),] # remove missing row for ACC
 
-group<-factor(as.character(pheno$Group), levels = c("cByJ", "cJ")) 
-model1<- apply(all_samples,function(x){lm(x~group)}) 
+group<-factor(as.character(pheno$Group), levels = c("cByJ", "cJ")) # make aggression types factors
+
+# model
+model1 <- apply(all_samples,1,function(x){lm(x~group)}) # run your model
+pval <- lapply(model1,function(x){summary(x)$coefficients[2,"Pr(>|t|)"]}) # extract the p-values of each model
+P.Value <- t(as.data.frame(pval)) 
+estimates <- lapply(model1,function(x){summary(x)$coefficients[2,"Estimate"]}) # extract estimate of model
+
+# new data frame
+linreg <- as.data.frame(cbind(estimates, P.Value))
+colnames(linreg) <- c("estimates", "pval")
+linreg <- sapply(linreg, unlist)
+linreg <- linreg[order(linreg[,2]), ] 
+
+# write to csv
+fwrite(linreg, file= "/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/filtered/linreg_ACC.csv")
