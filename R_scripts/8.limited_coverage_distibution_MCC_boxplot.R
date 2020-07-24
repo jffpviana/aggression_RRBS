@@ -19,9 +19,8 @@ names(files) <- str_match(Sys.glob("*MCC_r1_trimmed_bismark_bt2.bismark.cov"),pa
 rrbs <- readBismark(files, colData = names(files)) #BSraw object
   
 # DMR
-rrbs.small <- rrbs[1:1000,] 
 # BSraw object but restricted to CpG sites within CpG clusters:
-rrbs.clust.unlim <- clusterSites(object = rrbs.small,
+rrbs.clust.unlim <- clusterSites(object = rrbs,
                                  groups = colData(rrbs)$group,
                                  perc.samples = 4/5,
                                  min.sites = 20,
