@@ -22,10 +22,9 @@ rrbs <- readBismark(files, colData = names(files)) #BSraw object
 # rrbs.cByJ <- rrbs[, 1:5] # 01-05, non-aggressive
 # rrbs.cJ <- rrbs[, 6:10] # 06-10, aggressive
 
-# predicted meth
-rrbs.small <- rrbs[1:1000,] 
+# predicted meth 
 # BSraw object but restricted to CpG sites within CpG clusters:
-rrbs.clust.unlim <- clusterSites(object = rrbs.small,
+rrbs.clust.unlim <- clusterSites(object = rrbs,
                                  groups = colData(rrbs)$group,
                                  perc.samples = 4/5,
                                  min.sites = 20,
