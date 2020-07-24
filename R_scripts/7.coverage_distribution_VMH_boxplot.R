@@ -21,7 +21,13 @@ for(f in 1:length(files)){
   
   # coverage distibution boxplot 
   pdf(paste0("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/boxplots/VMH/CpG_coverage_distribution_",names(files)[[f]],"_boxplot.pdf"))
-  covBoxplots(rrbs, col = "cornflowerblue", las = 2)
+  covBoxplots(rrbs,
+              main = paste0("CpG site coverage distibution for ", names(files)[[f]]),
+              xlab = names(files)[[f]],
+              ylab = "Coverage",
+              col = "orange",
+              border = "brown",
+              notch = TRUE)
   dev.off()
   
   print("done")
