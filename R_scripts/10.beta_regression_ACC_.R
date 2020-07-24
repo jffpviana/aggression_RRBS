@@ -1,22 +1,23 @@
 # install
-#if (!requireNamespace("BiocManager", quietly = TRUE))
- #install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+ install.packages("BiocManager")
 
- #BiocManager::install("BiSeq")
+ BiocManager::install("BiSeq")
 
 library(BiSeq)
 library(stringr)
 library(dplyr)
 library(data.table)
 
-###########################TESTING GROUP EFFECTS#################################
+###########################BETA REGRESSION#################################
 
 # phenotype csv
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/")
 pheno <- as.data.frame(fread(file='BLBbrains_pheno.csv', stringsAsFactors = FALSE, header = TRUE))
 pheno <- pheno[-which(pheno$ACC_ID=="-"),] # remove missing row for ACC
 
-colData <- DataFrame(group = pheno$Group, row.names = pheno$ACC_ID)
+# colData <- DataFrame(group = pheno$Group, row.names = pheno$ACC_ID)
+colData <- DataFrame(group = factor(pheno$Group), row.names = pheno$ACC_ID)
 
 # cd
 setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/")
@@ -41,12 +42,6 @@ quant <- quantile(totalReads(rrbs.clust.unlim)[ind.cov], 0.9) # coverage
 rrbs.clust.lim <- limitCov(rrbs.clust.unlim, maxCov = quant) # smooth the methylation values of CpG sites within the clusters
 
 predictedMeth <- predictMeth(object = rrbs.clust.lim) # BSrel object with smoothed relative methylation levels for each CpG site within CpG clusters
-
-# subsetting rrbs
-cByJ <- predictedMeth[, 1:5]
-cJ <- predictedMeth[, 6:10]
-mean.cByJ <- rowMeans(methLevel(cByJ))
-mean.cJ <- rowMeans(methLevel(cJ))
 
 # beta regression
 betaResults <- betaRegression(formula = ~group,
