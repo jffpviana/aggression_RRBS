@@ -57,7 +57,7 @@ betaResultsNull <- betaRegression(formula = ~group.null,
                                   link = "probit",
                                   object = predictedMethNull,
                                   type="BR")
-data(vario)
+data(vario) # vario <- makeVariogram(betaResultsNull) causes an error
 
 # variogram - does produce a plot
 pdf("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/boxplots/VMH/variogram_VMH_small.pdf")
