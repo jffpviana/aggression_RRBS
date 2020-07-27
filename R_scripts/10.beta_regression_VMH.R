@@ -26,6 +26,10 @@ files <- list.files(pattern="*VMH_r1_trimmed_bismark_bt2.bismark.cov")
 names(files) <- str_match(Sys.glob("*VMH_r1_trimmed_bismark_bt2.bismark.cov"),paste0("BLB","(.*?.....)"))[,1]
 # names(files)[[f]]
 
+#####
+identical(names(files), rownames(colData))
+#####
+
 rrbs <- readBismark(files, colData = colData) #BSraw object
 
 # rrbs small - to test out code
@@ -51,12 +55,18 @@ betaResults <- betaRegression(formula = ~group,
 print(head(betaResults))
 
 # predicted meth null- PROBLEM HERE
-predictedMethNull <- predictedMeth[,c(1,3,5,7,9,11,2,4,6,8,10)]
-colData(predictedMethNull)$group.null <- rep(1, 11) # which columns should I repeat?
+
+#you don't need to select columns, you can just use the predictedMeth and add a column to the group data where the caes and controls are mixed.
+colData(predictedMeth)$group.null <- as.factor(c(rep(c('cByJ', 'cJ'), 5),'cByJ'))
+#print colData(predictedMeth) and note the two columns. Before you used the real allocation of cByJ and cJ to run the betaregression, now you are making up a fake status of cByj and cJ for each sample so the p-values are normally distributed.
+#the code below wasn't working because your new group wasn't a factor, it was still a string. makeVariogram works now.
+
 betaResultsNull <- betaRegression(formula = ~group.null,
                                   link = "probit",
-                                  object = predictedMethNull,
-                                  type="BR")
+                                  object = predictedMeth,
+                                  type="BR") #note I substituted predictedMethNull for predictedMeth - you can use the same methylation values as long as you use the made up group criteria (group.null)
+
+vario <- makeVariogram(betaResultsNull)
 data(vario) # vario <- makeVariogram(betaResultsNull) causes an error
 
 # variogram - does produce a plot
