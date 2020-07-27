@@ -51,7 +51,7 @@ betaResults <- betaRegression(formula = ~group,
 print(head(betaResults))
 
 # predicted meth null- PROBLEM HERE
-predictedMethNull <- predictedMeth[,c(1:5, 6:11)] #is there any point in specifying these columns?
+predictedMethNull <- predictedMeth[,c(1,3,5,7,9,11,2,4,6,8,10)]
 colData(predictedMethNull)$group.null <- rep(1, 11) # which columns should I repeat?
 betaResultsNull <- betaRegression(formula = ~group.null,
                                   link = "probit",
