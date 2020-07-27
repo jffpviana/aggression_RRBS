@@ -27,7 +27,8 @@ names(files) <- str_match(Sys.glob("*VMH_r1_trimmed_bismark_bt2.bismark.cov"),pa
 # names(files)[[f]]
 
 rrbs <- readBismark(files, colData = colData) #BSraw object
-# rrbs small
+
+# rrbs small - to test out code
 rrbs.small <- rrbs[1:1000,]
 rrbs.clust.unlim <- clusterSites(object = rrbs.small,
                                    groups = colData(rrbs)$group,
@@ -35,13 +36,6 @@ rrbs.clust.unlim <- clusterSites(object = rrbs.small,
                                    min.sites = 10,
                                    max.dist = 200)
 
-# predicted meth
-# BSraw object but restricted to CpG sites within CpG clusters:
-rrbs.clust.unlim <- clusterSites(object = rrbs,
-                                 groups = colData(rrbs)$group,
-                                 perc.samples = 4/5,
-                                 min.sites = 20,
-                                 max.dist = 100)
 # smoothing
 ind.cov <- totalReads(rrbs.clust.unlim) > 0
 quant <- quantile(totalReads(rrbs.clust.unlim)[ind.cov], 0.9) # coverage
@@ -56,16 +50,16 @@ betaResults <- betaRegression(formula = ~group,
                               type = "BR")
 print(head(betaResults))
 
-# predicted meth null
-predictedMethNull <- predictedMeth[,c(1:5, 6:11)]
-colData(predictedMethNull)$group.null <- rep(1, 11)
+# predicted meth null- PROBLEM HERE
+predictedMethNull <- predictedMeth[,c(1:5, 6:11)] #is there any point in specifying these columns?
+colData(predictedMethNull)$group.null <- rep(1, 11) # which columns should I repeat?
 betaResultsNull <- betaRegression(formula = ~group.null,
                                   link = "probit",
                                   object = predictedMethNull,
                                   type="BR")
 data(vario)
 
-# variogram
+# variogram - does produce a plot
 pdf("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/boxplots/VMH/variogram_VMH_small.pdf")
 plot(vario$variogram$v)
 vario.sm <- smoothVariogram(vario, sill = 0.9)
