@@ -1,6 +1,7 @@
 library(BiSeq)
 library(stringr)
 library(dplyr)
+library(data.table)
 
 setwd("/Volumes/vianaj-genomics-brain-development//MATRICS/bismark_methylation_extractor/") # /Volumes/vianaj-genomics-brain-development/MATRICS/
 
@@ -39,11 +40,11 @@ covBoxplots(rrbs,
 # DMR
 rrbs.small <- rrbs[1:1000,] 
 # BSraw object but restricted to CpG sites within CpG clusters:
-rrbs.clust.unlim <- clusterSites(object = rrbs.small,
+rrbs.clust.unlim <- clusterSites(object = rrbs,
                                  groups = colData(rrbs)$group,
                                  perc.samples = 4/5,
-                                 min.sites = 20,
-                                 max.dist = 100)
+                                 min.sites = 10,
+                                 max.dist = 200)
 # freq covered cpg sites (perc.samples) 
 # regions are detected where not less than min.sites frequently covered CpG sites are sufficiently
 # close to each other (max.dist.
