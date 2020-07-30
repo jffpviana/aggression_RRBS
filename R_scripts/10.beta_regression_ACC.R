@@ -1,9 +1,3 @@
-# install
-#if (!requireNamespace("BiocManager", quietly = TRUE))
- #install.packages("BiocManager")
-
- #BiocManager::install("BiSeq")
-
 library(BiSeq)
 library(stringr)
 library(dplyr)
@@ -16,7 +10,6 @@ setwd("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/")
 pheno <- as.data.frame(fread(file='BLBbrains_pheno.csv', stringsAsFactors = FALSE, header = TRUE))
 pheno <- pheno[-which(pheno$ACC_ID=="-"),] # remove missing row for ACC
 
-# colData <- DataFrame(group = pheno$Group, row.names = pheno$ACC_ID)
 colData <- DataFrame(group = factor(pheno$Group), row.names = pheno$ACC_ID)
 
 # cd
@@ -28,7 +21,7 @@ names(files) <- str_match(Sys.glob("*ACC_r1_trimmed_bismark_bt2.bismark.cov"),pa
 # names(files)[[f]]
 
 #####
-identical(names(files), rownames(colData))
+identical(names(files), rownames(colData)) # should return true
 #####
 
 rrbs <- readBismark(files, colData = colData) #BSraw object
@@ -38,7 +31,7 @@ rrbs <- readBismark(files, colData = colData) #BSraw object
 rrbs.clust.unlim <- clusterSites(object = rrbs,
                                  groups = colData(rrbs)$group,
                                  perc.samples = 4/5,
-                                 min.sites = 10,
+                                 min.sites = 20,
                                  max.dist = 100)
 
 # smoothing
@@ -53,12 +46,14 @@ betaResults <- betaRegression(formula = ~group,
                               link = "probit",
                               object = predictedMeth,
                               type = "BR")
+print("betaResults:")
 print(head(betaResults))
 
-# predicted meth null- PROBLEM HERE
+# predicted meth null
 
 #you don't need to select columns, you can just use the predictedMeth and add a column to the group data where the caes and controls are mixed.
-colData(predictedMeth)$group.null <- as.factor(c(rep(c('cByJ', 'cJ'), 5),'cByJ'))
+colData(predictedMeth)$group.null <- as.factor(c(rep(c('cByJ', 'cJ'), 5)))
+print("colData(predictedMeth)")
 print(colData(predictedMeth)) # and note the two columns. Before you used the real allocation of cByJ and cJ to run the betaregression, now you are making up a fake status of cByj and cJ for each sample so the p-values are normally distributed.
 #the code below wasn't working because your new group wasn't a factor, it was still a string. makeVariogram works now.
 
@@ -86,15 +81,37 @@ vario.sm$pValsList <- vario.aux$pValsList
 locCor <- estLocCor(vario.sm)
 clusters.rej <- testClusters(locCor,
                              FDR.cluster = 0.1)
+print("rejected clusters:")
 clusters.rej$clusters.reject
 
 # Trim significant CpG clusters
 clusters.trimmed <- trimClusters(clusters.rej,
                                  FDR.loc = 0.05)
+print("head(clusters.trimmed)")
 head(clusters.trimmed)
 
 # find DMRs
 DMRs <- findDMRs(clusters.trimmed,
                  max.dist = 100,
                  diff.dir = TRUE)
+print("DMRs")
 DMRs
+
+# DNA methylation values in each DMR
+rowCols <- c("magenta", "blue")[as.numeric(colData(predictedMeth)$group)]
+
+for(i in 1:length(DMRs)){
+  pdf(paste0("/rds/projects/v/vianaj-genomics-brain-development/MATRICS/bismark_methylation_extractor/boxplots/ACC/DMR_",i,"_methylation_levels_scatter.pdf"))
+  print("scatter plot", i)
+  plotSmoothMeth(object.rel = predictedMeth,
+                 region = DMRs[i],
+                 groups = colData(predictedMeth)$group,
+                 group.average = FALSE,
+                 col = c("magenta", "blue"),
+                 lwd = 1.5)
+  legend("topright",
+         legend=levels(colData(predictedMeth)$group),
+         col=c("magenta", "blue"),
+         lty=1, lwd = 1.5)
+  dev.off()
+}
