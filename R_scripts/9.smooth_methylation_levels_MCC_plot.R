@@ -38,7 +38,7 @@ predictedMeth <- predictMeth(object = rrbs.clust.lim) # BSrel object with smooth
 
 # subsetting rrbs
 cByJ <- predictedMeth[, 1:5]
-cJ <- predictedMeth[, 6:10]
+cJ <- predictedMeth[, 6:11]
 mean.cByJ <- rowMeans(methLevel(cByJ))
 mean.cJ <- rowMeans(methLevel(cJ))
 
