@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --ntasks 8
-#SBATCH --time 4-0:0:0
+#SBATCH --time 10-0:0:0
 #SBATCH --qos bbdefault
 #SBATCH --mail-type ALL
 
@@ -11,7 +11,7 @@ module purge; module load bluebear
 module load Bismark/0.22.3-foss-2019b #load bismark
 
 #run Bismark: NOTE assumes directional.
-mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HC/combined/bismark_alignment/
+#mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HC/combined/bismark_alignment/
 
 cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HC/combined/trim_galore_output
 
