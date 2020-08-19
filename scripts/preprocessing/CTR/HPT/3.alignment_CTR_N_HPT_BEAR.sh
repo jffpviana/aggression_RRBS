@@ -13,7 +13,7 @@ module load Bismark/0.22.3-foss-2019b #load bismark
 #run Bismark: NOTE assumes directional.
 #mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/bismark_alignment/
 
-cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/trim_galore_output
+cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/trim_galore_output/new
 
 #gzip -d *.fq.gz
 
