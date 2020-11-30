@@ -10,7 +10,7 @@ module purge; module load bluebear
 
 module load Trim_Galore/0.6.5-GCCcore-8.3.0-Java-11-Python-3.7.4
 
-mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/trim_galore_output
+#mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/trim_galore_output
 
 #trim the reads
 

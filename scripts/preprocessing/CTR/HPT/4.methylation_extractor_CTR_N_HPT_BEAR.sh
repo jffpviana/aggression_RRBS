@@ -10,7 +10,7 @@ module purge; module load bluebear
 
 module load Bismark/0.22.3-foss-2019b #load bismark
 
-mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/methylation/
+#mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/methylation/
 
 cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/methylation/
 
