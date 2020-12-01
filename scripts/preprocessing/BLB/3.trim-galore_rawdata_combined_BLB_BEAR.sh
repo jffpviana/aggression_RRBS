@@ -14,4 +14,4 @@ module load Trim_Galore/0.6.5-GCCcore-8.3.0-Java-11-Python-3.7.4
 
 #trim the reads
 
-trim_galore -q 20  --phred33 --rrbs --gzip --fastqc_args "--outdir /gpfs/ts0/scratch/jfv203/MATRICS/BLB_ACC/trim_galore_output" --output_dir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/raw_data_test/trim_galore_output /rds/projects/v/vianaj-genomics-brain-development/MATRICS/raw_data_test/*.fq
+trim_galore -q 20  --phred33 --rrbs --gzip --fastqc_args "--outdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/BLB/VMH/trim_galore_output/" --output_dir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/BLB/VMH/trim_galore_output/ /rds/projects/v/vianaj-genomics-brain-development/MATRICS/raw_data_test/*.fq
