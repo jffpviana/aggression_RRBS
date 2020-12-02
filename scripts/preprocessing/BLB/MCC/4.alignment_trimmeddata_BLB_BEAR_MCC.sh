@@ -24,5 +24,5 @@ file=`basename $i`
 sample=`echo $file `
 read1=`ls *.fq | grep ^$sample`;
 
-bismark -N 1 --un --ambiguous --gzip -q --se $read1 --genome  /rds/projects/v/vianaj-genomics-brain-development/MATRICS/reference_files/mouse_genome/with_spikeins -o /rds/projects/v/vianaj-genomics-brain-development/MATRICS/BLB/MCC/trim_galore_output
+bismark -N 1 --un --ambiguous --gzip -q --se $read1 --genome  /rds/projects/v/vianaj-genomics-brain-development/MATRICS/reference_files/mouse_genome/with_spikeins -o /rds/projects/v/vianaj-genomics-brain-development/MATRICS/BLB/MCC/bismark_alignment/
 done
