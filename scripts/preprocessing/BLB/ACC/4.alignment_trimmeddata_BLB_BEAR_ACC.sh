@@ -15,7 +15,7 @@ module load Bismark/0.22.3-foss-2019b #load bismark
 
 cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/BLB/ACC/trim_galore_output
 
-gzip -d *.fq.gz
+#gzip -d *.fq.gz
 
 
 for i in *_trimmed.fq
