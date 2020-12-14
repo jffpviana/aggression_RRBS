@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --ntasks 8
+#SBATCH --ntasks 4
 #SBATCH --time 4-0:0:0
 #SBATCH --qos bbdefault
 #SBATCH --mail-type ALL
@@ -13,7 +13,7 @@ module load Bismark/0.22.3-foss-2019b #load bismark
 #run Bismark: NOTE assumes directional.
 mkdir /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTT/PFC/bismark_alignment
 
-cd /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTT/PFC/trim_galore_output
+cd 8/rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTT/PFC/trim_galore_output
 
 #gzip -d *.fq.gz
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --ntasks 3
+#SBATCH --ntasks 1
 #SBATCH --time 1-0:0:0
 #SBATCH --qos bbdefault
 #SBATCH --mail-type ALL
