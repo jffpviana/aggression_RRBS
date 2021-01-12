@@ -5,7 +5,10 @@
 #SBATCH --mail-type ALL
 
 
+
+
+
 #module load slurm-interactive #load module
 #fisbatch_screen --ntasks 1 --time 30
 
- gzip /rds/projects/v/vianaj-genomics-brain-development/MATRICS/CTR/HPT/bismark_alignment/*.bam
+gzip /rds/projects/v/vianaj-genomics-brain-development/MATRICS/BLB/ACC/bismark_alignment/*.bam # Unzip the .fq files in all sub folders
