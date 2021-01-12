@@ -1,5 +1,5 @@
 module load slurm-interactive #load module
-fisbatch_screen --ntasks 1 --time 12:0:0
+fisbatch_screen --ntasks 1 --time 24:0:0
 
 #These samples were sequenced twice. After inspecting the raw reads of both runs separately (FACTQC) and check their quality I decided to combine both for further analysis
 
