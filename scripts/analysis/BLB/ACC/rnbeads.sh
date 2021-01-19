@@ -1,5 +1,5 @@
 module load slurm-interactive #load module
-fisbatch_screen --ntasks 4 --time 8:0:0
+fisbatch_screen --ntasks 2 --time 8:0:0
 
 module load R/3.6.2-fosscuda-2019b
 
